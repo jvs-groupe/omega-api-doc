@@ -11,7 +11,7 @@ Omega est une application de gestion et facturation de l'eau. Afin de communique
 * Echanges soumis à un contrat préalable d'utilisation avec JVS-Mairistem.
 * [Spécificités Json-Api](./jsonapi.md) liées à Omega.
 
-** Vous trouverez certains exemples d'utilisation sous divers langages sur [github](https://github.com/jvs-groupe) **
+**Vous trouverez certains exemples d'utilisation sous divers langages sur [github](https://github.com/jvs-groupe)**
 
 # Authentification
 
