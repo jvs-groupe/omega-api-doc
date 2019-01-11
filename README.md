@@ -3,7 +3,7 @@ Documentation des APIs Omega
 
 # Présentation
 
-Omega est une application de gestion et facturation de l'eau. Afin de communiquer avec d'éventuels partenaires des APIs ont été implémentées. La description de ces APIs est libre, par contre pour en profiter, il faut prendre contact avec la société [JVS-Mairistem](https://www.jvs-mairistem.fr/approche/omega).
+Omega est une application dédiée aux structures de distribution de l’eau et d’assainissement. Afin de communiquer avec d'éventuels partenaires des APIs ont été implémentées. La documentation des APIs est libre, mais leur usage devra être validé par nos équipe techniques (prendre contact avec votre correspondant habituel pour cela). [JVS-Mairistem](https://www.jvs-mairistem.fr/approche/omega).
 
 # Techniquement
 
@@ -15,15 +15,9 @@ Omega est une application de gestion et facturation de l'eau. Afin de communique
 
 # Authentification
 
-Il existe plusieurs techniques d'authentification à appliquer en fonction des besoins. En effet certaines sont réservées à une utilisation pour des partenaires qui pourront consulter la base de données sur une population définie et d'autres à destination des abonnés qui pourront consulter leurs données personnelles sous convert de la création d'un compte.
-
 ## Partenaires
 
 Pour les partenaires une authentification basée sur les spécifications [Hawk](https://github.com/hueniverse/hawk) a été mise en place. Nous fournirons par client un accès via clef ainsi qu'un identifiant et une clef de sécurisation pour le protocole Hawk. Ces clefs et identifiants ne devront pas être accessible par les utilisateurs finaux.
-
-## Accès abonné
-
-Pour un accès abonné, l'API va permettre de créer et administrer un compte qui délivrera un jeton [JWT](https://jwt.io/introduction/) suite à une phase de login réussie pour que l'abonné puisse consultée ses données personnelles.
 
 # Limitations
 
@@ -31,7 +25,7 @@ Les APIs ne sont pour l'instant accessible qu'en lecture. Pour modifier des donn
 
 # Schéma général de circulation
 
-Afin de garder une cohérence dans le temps pour les APIs et d'utiliser des technologies récentes et sécurisées tous les appels passeront forcément par OmegaWEB, application en SASS.
+Afin de garder une cohérence dans le temps pour les APIs et utiliser des technologies récentes et sécurisées tous les appels passeront forcément par OmegaWEB, application en SASS.
 
 ![](./images/Diapositive1.png)
 
@@ -39,18 +33,112 @@ Afin de garder une cohérence dans le temps pour les APIs et d'utiliser des tech
 
 # APIs
 
-Les APIs ont pour but principal de mettre à disposition les données liées aux points de consommation et contrats; soit restreint à un seul abonné (cas d'un JWT identifiant un abonné), soit restreint à une population en accord avec le partenaire.
+Les APIs ont pour but principal de mettre à disposition les données liées aux points de consommation et contrats; restreint à une population en accord avec le partenaire.
 
 ## Fonctionnement
 
 **Le fonctinnement décrit ci-dessous est lié au format Json-Api**
 
-Chaque objet "métier" aura un équivalent en modèle dans l'API. Par défaut sans rien préciser l'API va retourner les données jugées principales de cet objet. Par exemple pour une liste de contrats on aura les données du contrat, son adresse et l'occupant. Pour un seul contrat on aura en plus les relevés et les factures. Ceci étant bien entendu paramétrable à la demande pour optimiser au mieux les flux échangé avec OmegaWEB, ça ne sert à rien de retourner des données volumineuses non exploitées.
+Chaque objet "métier" aura un équivalent en modèle dans l'API. Par défaut sans rien préciser l'API va retourner les données jugées principales de cet objet. Par exemple pour une liste de contrats on aura les données du contrat, son adresse et l'occupant. Pour un seul contrat on aura en plus les relevés et les factures. Ceci étant bien entendu paramétrable à la demande pour optimiser au mieux les flux échangés avec OmegaWEB, ça ne sert à rien de retourner des données volumineuses non exploitées.
 
 Pour rappel le lien de la [partie technique](./jsonapi.md) de l'API pour réaliser ces filtres, inclusions, ...
+
+## Les énumérations
+
+Les énumérations contiennent l'ensemble des codifications de l'application, par exemple les civilités, diamètres de compteur, ... Ces donnés ne varient pas énormément et peuvent être mises en cache pour une durée limitée afin de garder des performances correctes.
+
+![](./images/Diapositive3.png)
+
+Informations sur l'API :
+
+* Recherche :
+    * Endpoint : /api/v1/partner/enum
+    * Méthode : GET
+    * Paramètres : selon format json-API
+    * Cette API n'est pas paginée par défaut
+    * Include :
+        * ligenum : lignes de l'énumération (par défaut On)
+
+## Les adresses
+
+Les adresses sont découpées en plusieurs APIs afin de simplifer les lectures.
+
+![](./images/Diapositive4.png)
+
+* Recherche de commune :
+    * Endpoint : /api/v1/partner/commune
+    * Méthode : GET
+    * Paramètres : selon format json-API
+    * Cette API est paginée par 20
+    * Include :
+        * voie (par défaut Off)
+* Lecture d'une commune :
+    * Endpoint : /api/v1/partner/commune/:organism_id
+    * Méthode : GET
+    * Paramètres : identifiant, et selon format json-API
+        * Include :
+            * voie (par défaut On)
+* Recherche de voie :
+    * Endpoint : /api/v1/partner/voie
+    * Méthode : GET
+    * Paramètres : selon format json-API
+    * Cette API est paginée par 20
+    * Include :
+        * commune (par défaut On)
+* Lecture d'une voie :
+    * Endpoint : /api/v1/partner/voie/:voie_id
+    * Méthode : GET
+    * Paramètres : selon format json-API
+    * Include :
+        * commune (par défaut On)
+* Recherche des adresses de desserte :
+    * Endpoint : /api/v1/partner/pdessadr
+    * Méthode : GET
+    * Paramètres : selon format json-API
+    * Cette API est paginée par 20
+    * Include :
+        * voie (par défaut On)
+        * Commune (par défaut On)
+* Lecture d'une adresse de desserte :
+    * Endpoint : /api/v1/partner/pdessadr/:pdessadr_id
+    * Méthode : GET
+    * Paramètres : identifiant, et selon format json-API
+    * Include :
+        * voie (par défaut On)
+        * Commune (par défaut On)
 
 ## Le Point de consommation
 
 Pour faire simple, un point de consommation peut être assimilé à un compteur. Voici le modèle général de l'API :
 
-![](./images/Diapositive3.png)
+![](./images/Diapositive5.png)
+
+Informations sur l'API :
+
+* Recherche :
+    * Endpoint : /api/v1/partner/pconso
+    * Méthode : GET
+    * Paramètres : selon format json-API
+    * Cette API est paginée par défaut par 20.
+    * Include :
+        * pdessadr (par défaut On)
+        * voie (par défaut On)
+        * commune (par défaut On)
+        * contratactif (par défaut On)
+        * compteur (par défaut On)
+        * occupant (par défaut On)
+        * redevable (par défaut On)
+        * propriétaire (par défaut On)
+* Lecture d'enregistrement
+    * Endpoint : /api/v1/partner/pconso/:pconso_id
+    * Méthode : GET
+    * Paramètres : L'identifiant, et selon format json-API
+    * Include :
+        * pdessadr (par défaut On)
+        * voie (par défaut On)
+        * commune (par défaut On)
+        * contratactif (par défaut On)
+        * compteur (par défaut On)
+        * occupant (par défaut On)
+        * redevable (par défaut On)
+        * propriétaire (par défaut On)
