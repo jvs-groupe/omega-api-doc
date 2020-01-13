@@ -196,7 +196,7 @@ curl \
                 "prenpers": "XXXXX",
                 "cpltnom": null,
                 "adrpers1": null,
-                "adrpers2": "703 CHEMIN DE BRUEGES",
+                "adrpers2": "XXX RUE XXX",
                 "adrpers3": null,
                 "cppers": "30100",
                 "villepers": "ALES",
