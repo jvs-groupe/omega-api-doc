@@ -17,7 +17,7 @@ Omega est une application dédiée aux structures de distribution de l’eau et 
 
 ## Partenaires
 
-Pour les partenaires une authentification basée sur les spécifications [Hawk](https://github.com/hueniverse/hawk) a été mise en place. Nous fournirons par client un accès via clef ainsi qu'un identifiant et une clef de sécurisation pour le protocole Hawk. Ces clefs et identifiants ne devront pas être accessible par les utilisateurs finaux.
+Pour les partenaires une authentification basée sur les spécifications [Hawk](https://github.com/hueniverse/hawk) a été mise en place. Nous fournirons par client un accès via clef ainsi qu'un identifiant et une clef de sécurisation pour le protocole Hawk. Ces clefs et identifiants ne devront pas être accessible par les utilisateurs finaux et devront rester secrets.
 
 # Limitations
 
@@ -42,6 +42,48 @@ Les APIs ont pour but principal de mettre à disposition les données liées aux
 Chaque objet "métier" aura un équivalent en modèle dans l'API. Par défaut sans rien préciser l'API va retourner les données jugées principales de cet objet. Par exemple pour une liste de contrats on aura les données du contrat, son adresse et l'occupant. Pour un seul contrat on aura en plus les relevés et les factures. Ceci étant bien entendu paramétrable à la demande pour optimiser au mieux les flux échangés avec OmegaWEB, ça ne sert à rien de retourner des données volumineuses non exploitées.
 
 Pour rappel le lien de la [partie technique](./jsonapi.md) de l'API pour réaliser ces filtres, inclusions, ...
+
+## Tester l'accès, maîtriser les "Headers"
+
+A ce niveau aucune en-tête ApiId n'est nécessaire, mais il est conseillé de l'ajouter. En cas de code retour 415, vérifiez que vous avez bien renseigné l'en-tête Accept, donc au minimum :
+
+```
+  ApiId: key@name
+  Accept: application/vnd.api+json
+```
+
+### Test simple
+
+Le service web ci-dessous doit renvoyer une réponse 204 sans contenu. Si l'accès est soumis à restriction IP, il faudra nous communiquer les IPs ou masques à ajouter dans notre whitelist pour cet accès.
+
+* Endpoint : /api/v1/partner/test
+
+### Test 404 avec une réponse au format Json-Api
+
+* Endpoint : /api/v1/partner/test-404
+* Résultat attendu :
+
+```
+{
+    "errors": [
+        {
+            "links": {
+                "about": "http://jsonapi.org/format"
+            },
+            "code": "404",
+            "title": "Not Found!"
+        }
+    ]
+}
+```
+
+Pour le résultat on peut donc soit utiliser le code HTTP ou le code retourné dans l'object json errors en cas d'erreur.
+
+### Test de la sécurisation
+
+* Endpoint : /api/v1/partner/test-secured
+
+Une en-tête Authorizarion est obligatoire, différente en fonction du type de sécurité implémentée.
 
 ## Les énumérations
 
