@@ -360,7 +360,7 @@ Il est également possible de limiter les champs retournés en précisant le par
     --header 'Authorization: Bearer A1Z2E3R4T5Y6U7I8O9P0'
 ```
 
-* Description des champs
+#### Description des champs
 
 * facture_id : Identifiant interne unique de la facture
 * contfact_id : Identifiant interne du lien entre la facture et le contrat
