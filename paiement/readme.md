@@ -273,8 +273,6 @@ curl \
   --header 'Authorization: Bearer A1Z2E3R4T5Y6U7I8O9P0'
 ```
 
-* Exemple de résultat retourné :
-
 ```
 {
     "jsonapi": {
@@ -308,6 +306,7 @@ curl \
                 "sessexer": "FR",
                 "perannee": "2",
                 "datefact": "2019-09-23 00:00:00",
+                "datefactfr": "23092019",
                 "enum_typfac": "REEL",
                 "enum_natfac": "REEL",
                 "typefact": "Reelle",
@@ -342,9 +341,68 @@ curl \
                 "prenpers": "XXXXX",
                 "mail": null,
                 "tel": null,
-                "tel_mobile": null
+                "tel_mobile": null,
+                "vad": "123456svi"
             }
         }
     ]
 }
 ```
+
+Il est également possible de limiter les champs retournés en précisant le paramètre fields, ex :
+
+```
+  curl \
+    --location  \
+    --request GET 'https://omegaweb-pp.jvsonline.fr/api/v1/partner/facture/pour-paiement/343025705?page[limit]=1&fields[Partner_FactureCondensee]=facture_id,datefactfr,numcontrat,nap_cents,vad' \
+    --header 'Accept: application/vnd.api+json' \
+    --header 'ApiId: 71c94f39384ead6aa975edb07ca0c75e@partner-nextalk-ales' \
+    --header 'Authorization: Bearer A1Z2E3R4T5Y6U7I8O9P0'
+```
+
+* Description des champs
+
+* facture_id : Identifiant interne unique de la facture
+* contfact_id : Identifiant interne du lien entre la facture et le contrat
+* organism_id : Identifiant de l'organisme de facturation
+* exercice : Exercice de la facture
+* sessexer : Session dans l'exercice
+* perannee : Période dans l'année
+* datefact : Date de la facture au format YYYY-MM-DD HH:MI:SS
+* datefactfr : Date de la facture au format DDMMYYYY
+* enum_typfac : Code du type de facture
+* enum_natfac : Nature de la facture
+* typefact : Libellé du type de facture
+* recouvrable : 1 si recouvrable
+* prefixnofact : Préfixe du numéro de facture
+* nofacture : Numéro de facture unique dans l'année, alphanumérique
+* budget : Code du budget
+* factgroupe : 1 pour une facture groupée
+* consofac : Consommation facturée en m3
+* codemon : Code de la mannaie, EUR par défaut
+* ht : Total ht en Euros
+* tva : Total tva en Euros
+* ttc : Total Toutes Taxes en Euros
+* ttcestime : 1 pour indiquer une estimation
+* solde : 1 pour indiquer une facture soldée
+* avance : 1 pour indiquer une avance
+* mensualites : Nombre de mensualiatées
+* nap : Net à payer en Euros
+* nap_cents : Net à payer en centimes d'Euros
+* avoir : 1 pour indiquer un avoir
+* datech : Date d'échéance au format YYYY-MM-DD HH:MI:SS
+* daterecl : Date de réclamation au format YYYY-MM-DD HH:MI:SS
+* dateimp : Date d'impression au formaty YYYY-MM-DD HH:MI:SS
+* preleve : 1 pour indiquer une facture prélevée
+* annulee : 1 pour indiquer une facture annulée
+* dateann : Date d'annulation au format YYYY-MM-DD HH:MI:SS
+* avoirisee : 1 pour indiquer une facture avoirisée
+* nofactnum : Numéro de facture dans l'année, numérique
+* a_prelever : 1 pour indiquer une facture à prélever
+* numcontrat : Numéro du contrat
+* nompers : Nom du redevable
+* prenpers : Prénom du redevable
+* mail : Mail du redevable
+* tel : Téléphone du redevable
+* tel_mobile : Téléphone (mobile) du redevable
+* vad : Numéro de contrat vad
