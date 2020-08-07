@@ -406,3 +406,36 @@ Il est également possible de limiter les champs retournés en précisant le par
 * tel : Téléphone du redevable
 * tel_mobile : Téléphone (mobile) du redevable
 * vad : Numéro de contrat vad
+* debiteur : 1 si débiteur, 0 sinon
+* crediteur : 1 si créditeur, 0 sinon
+
+#### Paiements en plusieurs fois
+
+Les champs si dessous sont disponible en plus :
+
+* p_nf_possible : 0, 1, 2 ou 3 pour le paiement en plusieurs fois, maximum 3.
+* echeance1 : Première échéance en euros avec cents
+* echeance1_cents : Première échéance en cents
+* echeance2 : Autres échéances en euros avec cents
+* echeance2_cents : Autres échéances en cents
+* echeance2 : Autres échéances en euros et cents
+* vad_recur1 : Montant en euros avec cents de la première échéance
+* vad_recur1_cents : Montant en cents de la première échéance
+* vad_recur1_datefr : Date de la première échéance au format DDMMYYYY
+* vad_recur2 : Montant en euros avec cents de la seconde échéance
+* vad_recur2_cents : Montant en cents de la seconde échéance
+* vad_recur2_datefr : Date de la seconde échéance au format DDMMYYYY
+* vad_recur3 : Montant en euros avec cents de la troisième échéance
+* vad_recur3_cents : Montant en cents de la troisième échéance
+* vad_recur3_datefr : Date de la troisième échéance au format DDMMYYYY
+
+On utilise :
+
+* le nombre de jours pour calculer la date d'échance à partir de la date de facture.
+* Le jour pour les prochains prélèvements
+
+La première échéance est celle qui permet de réguler les écarts de centimes.
+Elle sera donc d'un montant égal ou supérieur aux prochaines, qui elles, auront le même montant.
+
+Si un paiement est demandé le 2, et qu'il ne reste que 34 jours avant l'échéance, le paiement en 2 fois ne sera pas possible.
+En effet le 10 du mois prochain, les 34 jours auront été dépassés.
