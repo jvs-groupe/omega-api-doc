@@ -439,3 +439,5 @@ Elle sera donc d'un montant égal ou supérieur aux prochaines, qui elles, auron
 
 Si un paiement est demandé le 2, et qu'il ne reste que 34 jours avant l'échéance, le paiement en 2 fois ne sera pas possible.
 En effet le 10 du mois prochain, les 34 jours auront été dépassés.
+
+**Il est très important d'utiliser le même paramétrage que le prestataire de paiement**
