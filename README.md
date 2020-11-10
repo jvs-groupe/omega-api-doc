@@ -3,9 +3,11 @@ Documentation des APIs Omega
 
 # Présentation
 
-Omega est une application dédiée aux structures de distribution de l’eau et d’assainissement. Afin de communiquer avec ses partenaires des APIs ont été implémentées. La documentation des APIs est libre, mais leur usage devra être enregistré et validé par nos équipe techniques (prendre contact avec votre correspondant habituel pour cela). [JVS-Mairistem](https://www.jvs-mairistem.fr/approche/omega).
+Omega est une application dédiée aux structures de distribution de l’eau et d’assainissement. Afin de communiquer avec ses partenaires des APIs ont été implémentées. Cette documentation a pour but d'expliquer le fonctionnement de ces APIs, mais, dans tous les cas, leur usage devra être enregistré et validé par nos équipe techniques (prendre contact avec votre correspondant habituel pour cela). [JVS-Mairistem](https://www.jvs-mairistem.fr/approche/omega).
 
 **Important**
+
+Les principaux éléments métier de l'application Omega sont interrogeable via service web afin de retourner un ou plusieurs éléments. Il existe la possibilité d'utiliser un système de filtres et également de retourner ou non les éléments périphériques de ces objets métier afin de réduire les appels aux services web.
 
 Il faut noter que toute demande de modification passe par une "demande" et ne sera pas forcément effectuée de manière automatique mais peut-être soumise à validation par un opérateur. Chaque demande se vera attribuer un numéro et il sera possible de suivre son évolution.
 
