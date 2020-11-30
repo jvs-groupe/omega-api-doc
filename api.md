@@ -77,8 +77,13 @@ Informations sur l'API :
             * libellé : getLibelle()
             * libellé court : getLibelleCourt()
 
-```
-    // Toutes les énumérations, le résultat n'est pas paginé
+```java
+    //
+    // Pour commencer on récupère donc toutes les énumérations
+    //
+    // Le résultat n'est pas paginé
+    // On injecte ensuite ces énumérations dans un conteneur qui contient des "helpers"
+    //
     EnumerationManager enumManager = null;
     enumManager = new EnumerationManager(wsClient);
     List<EnumerationModel> myListE = enumManager.find();
@@ -86,6 +91,18 @@ Informations sur l'API :
     for (EnumerationModel item : myListE) {
       logger.info("Enumération " + item.getNom());
     }
+    // On injecte ces énumérations dans le conteneur
+    Container omegaContainer = new Container();
+    omegaContainer.setEnums(myListE);
+```
+
+```java
+    //
+    // La civilité d'une personne
+    //
+    PersonneModel myOccupant = myContrat.getOccupant();
+    LigneEnumerationModel monEnum = omegaContainer.getLigneEnumeration(EnumerationType.CIVILITE, myOccupant.getCivilite());
+    logger.info("Occupant : " + monEnum.getLibelle()  + " " + myOccupant.getNomComplet());
 ```
 
 ## Les adresses de desserte
@@ -202,6 +219,7 @@ Informations sur l'API :
         * redevable (par défaut On)
         * propriétaire (par défaut On)
         * contrats (par défaut On)
+
 ```java
     // Recherche des points de consommation ayant 56 dans le numéro
     PointDeConsommationManager pconsoManager = null;
@@ -273,6 +291,8 @@ Cette partie est plus complexe, voici le descriptif des champs de chaque éléme
 * le dernier relevé (objet Releve) : getDernierRleve()
 * le nouveau relevé (objet Releve) : getNouveauReleve()
 * la liste des contrats (objet Contrat) : getContrats()
+* Le dernier index (Integer) : getIndexDernierReleve()
+* La consommation du dernier relevé (Integer) : getConsommationDernierReleve()
 
 Il existe une méthode toAdresse() pour convertir un point de consommation en objet adresse, détaillé ci-dessous.
 
@@ -336,6 +356,8 @@ Dans la plus part des cas il n'y aura qu'un contrat actif par point de consommat
 * l'objet occupant (objet Personne) : getOccupant()
 * la liste des consommes (objet Consomme) : getConsommes()
 * la nature d'abonné (objet NatureAbonne) : getNatureAbonne()
+* La dernière consommation relevée (Integer) : getDerniereConsommationRelevee()
+* La dernière consommation facturée (Integer) : getDerniereConsommationFacturee()
 
 ### Une nature d'abonné
 
